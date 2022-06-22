@@ -35,7 +35,7 @@ def test_get_check_time_response():
     timeResp= response.elapsed.total_seconds()
     assert timeResp <= 1
 
-# #1.4/Simular movies check header have value
+# #1.4/Simular movies check header have value/
 
 def test_get_check_header_value_response():
     response = requests.get(baseUrl + check_header_value_response, params=payloadforGET)
