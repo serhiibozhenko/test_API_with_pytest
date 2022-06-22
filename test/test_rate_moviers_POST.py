@@ -9,10 +9,10 @@ from test_Keys import *
 def test_post_rate_movie():
     file = open('TestData/for_rate.json')
     inputData = json.loads(file.read())
-    result5 = requests.post(url = baseUrl+path6, params=payload, json=inputData)
-    checkforSuccess = result5.json()['success']
+    response = requests.post(url = baseUrl+path_for_rate_and_delete , params=payload, json=inputData)
+    checkforSuccess = response.json()['success']
     assert checkforSuccess == True
-    checkforStatMessage = result5.json()['status_message']
+    checkforStatMessage = response.json()['status_message']
     assert checkforStatMessage == "The item/record was updated successfully."
-    checkforStatCode = result5.json()['status_code']
+    checkforStatCode = response.json()['status_code']
     assert checkforStatCode == 12

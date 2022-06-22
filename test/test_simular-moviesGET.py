@@ -1,58 +1,43 @@
+import re
+from urllib import response
 import requests
-from test_Keys import api_key
+from test_Keys import *
 from test_Links import *
+import pytest
 
 #1.1/Simular movies not founded movie_id
 
-result = requests.get(url1, api_key)
-forAssert = (result.json()['status_code'])
-print('Status code - '+ str(result.status_code))
-if forAssert == 34:
-    print('Passed test - Simular movies not founded movie_id')
-else:
-    print('Not passed test')
+def test_get_notfounded_movie():
+    response = requests.get(baseUrl + path_for_check_notfounded_movie, params=payloadforGET)
+    checkStatusCode = (response.json()['status_code'])
+    assert checkStatusCode == 34
+    forCheckSuccessStatus = (response.json()['success'])
+    assert forCheckSuccessStatus == False
+    fortCheckStatusMessage = (response.json()['status_message'])
+    assert fortCheckStatusMessage == 'The resource you requested could not be found.'
 
-forAssertSuccess = (result.json()['success'])
-
-if forAssertSuccess == False:
-    print('Success is false')
-else:
-    print('Not passed test')
-
-forAssertStatusMessage = (result.json()['status_message'])
-
-assert 'The resource you requested could not be found.' == forAssertStatusMessage 
 
 #1.2/Simular movies not founded api_key
 
-result1 = requests.get(url2)
-print(result1.json()) 
-forAssert1 = (result1.json()['status_code'])
-assert forAssert1 == 7
-assert result1.status_code == 401
-assert result1.json()['success'] == False
-assert result1.json()['status_message'] == 'Invalid API key: You must be granted a valid key.'
-print('Test -  Simular movies not founded api_key - Passed')
+def test_get_notfounded_api_key():
+    response = requests.get(baseUrl + path_for_check_notfounded_api_key)
+    forCheckStatusCode = (response.json()['status_code'])
+    assert forCheckStatusCode == 7
+    assert response.status_code == 401
+    assert response.json()['success'] == False
+    assert response.json()['status_message'] == 'Invalid API key: You must be granted a valid key.'
 
 
-#1.3/Simular movies time for response
+#1.3/Simular movies check time for response
 
-result2 = requests.get(url3, api_key)
-timeResp= result2.elapsed.total_seconds()
+def test_get_check_time_response():
+    response = requests.get(baseUrl + check_time_for_response, params=payloadforGET)
+    timeResp= response.elapsed.total_seconds()
+    assert timeResp <= 1
 
-passedTimeforRes = int(timeResp)
+# #1.4/Simular movies check header have value
 
-if passedTimeforRes <= 2:
-    print('Passed test time for response')
-    print(timeResp)
-else:
-    print('Not passed test time for response')
-    print(timeResp)
-
-
-#1.4/Simular movies check header have value
-
-result3 = requests.get(url4, api_key)
-checkHeader = result3.headers['content-type']
-assert checkHeader == 'application/json;charset=utf-8'
-print('Passed test check header have value')
+def test_get_check_header_value_response():
+    response = requests.get(baseUrl + check_header_value_response, params=payloadforGET)
+    checkHeader = response.headers['content-type']
+    assert checkHeader == 'application/json;charset=utf-8'

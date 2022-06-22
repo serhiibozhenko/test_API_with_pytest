@@ -7,10 +7,10 @@ from test_Links import *
 # 1.8/Delete put rate for movie
 
 def test_delete_put_rateMovie():
-    result6 = requests.delete(url=baseUrl+path7, params=payload)
-    checkforSuccessE = result6.json()['success']
+    response = requests.delete(url=baseUrl+path_for_rate_and_delete, params=payload)
+    checkforSuccessE = response.json()['success']
     assert checkforSuccessE == True
-    checkforStatMessageE = result6.json()['status_message']
+    checkforStatMessageE = response.json()['status_message']
     assert checkforStatMessageE == "The item/record was deleted successfully."
-    checkforStatCodeE = result6.json()['status_code']
+    checkforStatCodeE = response.json()['status_code']
     assert checkforStatCodeE == 13
